@@ -49,7 +49,8 @@ time_range(T, T, T).
 % a clause can come from:
 %  1. the completion
 %  2. the query
-%  3. the tautologies we add, forced by pysat
+%  3. the tautologies we add, forced by pysat, to account for
+%     literals potentially unmentioned in (1) and (2)
 
 get_cnf_clause(T, _Query, Clause) :-
  iccalc_var(n_statetrans_vars, N_statetrans_vars),

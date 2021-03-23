@@ -1,13 +1,6 @@
 
-%%%%%%%%%% error/2
-
-error(ErrorMsg, Args) :-
- atoms_concat(['*** ERROR: ', ErrorMsg, '~n'], ErrorLine),
- format(ErrorLine, Args).
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%% string utilities
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% string utilities
 
 %%%%%%%%%% atoms_concat/2
 
@@ -34,9 +27,8 @@ number_atom(Number, Atom) :-
  number_chars(Number, Chars),
  atom_chars(Atom, Chars).
 
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%% converting between types of term
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% converting between terms
 
 %%%%%%%%%% tuple_list/2
 

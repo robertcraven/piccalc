@@ -1,7 +1,6 @@
 
 :- use_module(library(lists), [reverse/2]).
 
-:- ensure_loaded(declarations).
 :- ensure_loaded('loading/action_description').
 :- ensure_loaded('loading/causal_theory').
 :- ensure_loaded('loading/completion').
@@ -19,11 +18,8 @@
   user_predicate/2,
   variable_rule/2.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%
-%%%%%%%%%% PUBLIC 
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% main predicates
 
 %%%%%%%%%% def: loadf/1
 
@@ -38,12 +34,6 @@ loadf([FilenamePart|FilenameParts]) :-
 
 loadf(FilenamePart) :-
  loadf([FilenamePart]).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%
-%%%%%%%%%% PRIVATE
 
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%% preloading and postloading
@@ -77,10 +67,10 @@ preloading_retractions :-
 
 preloading_retractions :-
  retractall(atom_integer(_,_,_,_)),
- retractall(domain(_,_,_,_,_,_)),
  retractall(causal_law(_)),
  retractall(completion_if_clause(_,_)),
  retractall(completion_onlyif_clause(_,_)),
+ retractall(domain(_,_,_,_,_,_)),
  retractall(file_term(_,_,_,_)),
  retractall(rule_body(_,_)),
  retractall(shiftable_rule(_,_,_)),
@@ -90,9 +80,7 @@ preloading_retractions :-
 
 preloading_iccvar_settings :-
  set_var(max_tval, 0),
- set_var(total_rule_count, 0),
- remove_var(n_clauses),
- remove_var(n_models).
+ set_var(total_rule_count, 0).
 
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%% finding files
@@ -112,7 +100,6 @@ full_filenames([FilenamePart|FilenameParts], [Filename|Filenames]) :-
 %  - The current working directory in the Unix shell
 %  - The value of the user-specified 'dir:domains' option
 %  - None (i.e. take File as an absolute filename)
-% If the file doesn't exist in any of these locations, return an error.
 
 full_filename(FilenamePart, Filename) :-
  iccalc_option(dir:working, DirFull),
@@ -129,9 +116,6 @@ full_filename(FilenamePart, Filename) :-
  absolute_file_name(FilenamePart, Filename,
                     [access(exist), file_errors(fail)]).
 
-full_filename(FilenamePart, _Filename) :-
- error('File \'~w\' not found', [FilenamePart]).
-
 %%%%%%%%%% def: postloading/2
 
 postloading([File|RestFiles], [FilePart|RestFileParts]) :-
@@ -143,6 +127,7 @@ postloading([File|RestFiles], [FilePart|RestFileParts]) :-
  set_var(mainfile_basename, Base),
  set_option(dir:domains, Path).
 
+%%%%%%%%%% def: filenames_parts/3
 
 filenames_parts([], [], []).
 
@@ -150,7 +135,7 @@ filenames_parts([FileName|Rest], [Path|RestPaths], [Base|RestBases]) :-
  filename_parts(FileName, Path, Base),
  filenames_parts(Rest, RestPaths, RestBases).
 
-%%%%% filename_parts/2 :: CHECK prologs don't have them - swi has base_name/2
+%%%%% filename_parts/3
 
 filename_parts(FileName, Path, Base) :-
  atom_codes(FileName, FileNameString),

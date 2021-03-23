@@ -16,6 +16,6 @@
 :- op(770,  xfy, [iff]).
 :- op(765,  xfy, [++]).
 :- op(760,  xfy, [&]).
-:- op(710,  xfy, [:]).                  % overrides Prolog precedence 550
+:- op(710,  xfy, [:]).
 :- op(540,  xfx, [..]).
 :- op(200,  fy,  [-]).

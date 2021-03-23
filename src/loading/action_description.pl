@@ -1,6 +1,6 @@
 
 %%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%% main predicate
+%%%%%%%%%%%%%%%%%%%% main predicates
 
 %%%%%%%%%% def: load_action_description/1
 
