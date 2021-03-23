@@ -62,15 +62,14 @@ get_cnf_clause(T, Query, Clause) :-
  mvc_to_boolean(QueryF, QueryFBool),
  nnf_to_cnf(QueryFBool, QueryCNF),
  iccalc_var(n_statetrans_vars, N_statetrans_vars),
- !,
  member(C, QueryCNF),
  clause_to_dimacs(C, N_statetrans_vars, Clause).
 
 get_cnf_clause(_T, _Query, [N,NN]) :-
  iccalc_var(state_integers, NstateVs),
  member(N, NstateVs),
- atom_integer(_, _, N, 1),
- domain(_, _, fc, _Dom, 2, 1),
+ atom_integer(C, _, N, 1),
+ domain(C, _, fc, _Dom, 2, 1),
  NN is -N.
 
 %%%%%%%%%% def: clause_to_dimacs/3

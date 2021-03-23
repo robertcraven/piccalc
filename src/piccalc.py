@@ -43,6 +43,8 @@ Prolog.consult(piccalc_prolog)
 
 timings = None
 
+file_basename = None
+
 statens = None
 transns = None
 state_bitstr_atom_map = None
@@ -77,7 +79,7 @@ def call_one_answer(Query):
 # iccalc interface: initial load
 
 def loadf(file):
-    call(f'loadf({file})')
+    call(f'loadf(\'{file}\')')
     get_theory_info()
 
 
@@ -91,6 +93,7 @@ def get_theory_info():
     global trans_nbits
     global n_statebits
     global n_transbits
+    global file_basename
 
     state_bitstr_atom_map = dict()
     trans_bitstr_atom_map = dict()
@@ -99,6 +102,8 @@ def get_theory_info():
 
     statens,n_statebits = get_type_info('state', state_bitstr_atom_map, state_nbits)
     transns,n_transbits = get_type_info('trans', trans_bitstr_atom_map, trans_nbits)
+
+    file_basename = call_one_answer('iccalc_var(mainfile_basename,Filename)')['Filename']
 
 
 def get_type_info(type, bitstr_atom_map, nbits):
@@ -211,7 +216,6 @@ def print_model(Tcurrent, T, bitstr):
 #
 # iccalc interface: transition systems
 
-@timing
 def transition_system(SolverName='minisat-gh'):
 
     global solver
@@ -219,7 +223,7 @@ def transition_system(SolverName='minisat-gh'):
 
     timings = []
 
-    dotfilename = os.path.join(piccalc_domains_dir, 'piccalc.dot')
+    dotfilename = os.path.join(piccalc_domains_dir, f'{file_basename}.dot')
     with open(dotfilename, 'w') as dotfile:
         write_dot_preamble(dotfile)
         # record the states
@@ -271,17 +275,16 @@ def make_trans(states, dotfile):
 
 
 def write_dot_preamble(dotfile):
-    preamble = textwrap.dedent("""\
-        digraph trans_system {
-
+    intro = f'digraph {file_basename} {{\n\n'
+    settings = textwrap.indent(textwrap.dedent("""\
          /* settings for output to A4 paper, using dot */
          margin=0.4;
          orientation=portrait;
          rankdir=TB;
          ranksep=2;
          searchsize=50;
-         size="7.47,10.89";\n\n""")      
-    dotfile.write(preamble)
+         size="7.47,10.89";\n\n"""), ' ')
+    dotfile.write(intro + settings)
 
 #######################
 #######################
