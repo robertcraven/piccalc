@@ -1,0 +1,14 @@
+
+fc(light).
+domain(light, C) :-
+ colour(C).
+
+colour(red).
+colour(yellow).
+colour(green).
+colour(red_yellow).
+
+caused light=yellow after light=green.
+caused light=red after light=yellow.
+caused light=red_yellow after light=red.
+caused light=green after light=red_yellow.

@@ -1,0 +1,45 @@
+
+
+%% 3: abc | acb | bac | bca | cab | cba
+%% 2: ab c | ba c | ac b | ca b | bc a | cb a
+%% 1: a b c
+
+B,B1,B2 :: blck(B).
+L,L1 :: location(L).
+
+blck(a).
+blck(b).
+blck(c).
+
+location(table).
+location(B).
+
+fc(on(B)).
+domain(on(B), L).
+
+sdfc(above(B,B1)).
+
+ac(move(B)).
+domain(move(B), L).
+domain(move(B), ff).
+
+inertial FC :-
+ fc(FC).
+exogenous AC :-
+ ac(AC).
+
+move(B)=L causes on(B)=L.
+
+caused false if on(B)=L & on(B1)=L :-
+ L \= table,
+ B @< B1.
+caused false if above(B,B).
+caused above(B,B1) if on(B)=B1.
+caused above(B,B2) if on(B)=B1 & above(B1,B2).
+default -above(B,B1).
+
+nonexecutable move(B)=L if on(B)=L.
+nonexecutable move(B)=L if on(B1)=B :-
+ B1 \= B.
+nonexecutable move(B)=L & move(B1)=L1 :-
+ B @< B1.

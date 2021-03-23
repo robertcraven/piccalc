@@ -1,0 +1,9 @@
+
+fc(inCarPark).
+ac(steal).
+
+steal causes -inCarPark.
+nonexecutable steal if -inCarPark.
+
+inertial inCarPark.
+exogenous steal.

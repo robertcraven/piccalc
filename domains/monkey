@@ -1,0 +1,82 @@
+
+L,L1,L2 :: location(L).
+T :: thing(T).
+
+location(l1).
+location(l2).
+location(l3).
+
+thing(monkey).
+thing(bananas).
+thing(box).
+
+fc(hasBananas).
+fc(onBox).
+fc(loc(T)).
+domain(loc(T), L).
+
+ac(walk(L)).
+ac(pushBox(L)).
+ac(climbOn).
+ac(climbOff).
+ac(graspBananas).
+
+% -- static laws
+
+caused loc(bananas)=L if hasBananas & loc(monkey)=L.
+caused loc(monkey)=L if onBox & loc(box)=L.
+
+% fluent dynamic
+
+walk(L) causes loc(monkey)=L.
+nonexecutable walk(L) if loc(monkey)=L.
+nonexecutable walk(L) if onBox.
+
+pushBox(L) causes loc(box)=L.
+pushBox(L) causes loc(monkey)=L.
+nonexecutable pushBox(L) if loc(monkey)=L.
+nonexecutable pushBox(L) if onBox.
+nonexecutable pushBox(L) if loc(monkey)=L1 & loc(box)=L2 :-
+ L1 \= L2.
+
+climbOn causes onBox.
+nonexecutable climbOn if onBox.
+nonexecutable climbOn if loc(monkey)=L1 & loc(box)=L2 :-
+ L1 \= L2.
+
+climbOff causes -onBox.
+nonexecutable climbOff if -onBox.
+
+graspBananas causes hasBananas.
+nonexecutable graspBananas if hasBananas.
+nonexecutable graspBananas if -onBox.
+nonexecutable graspBananas if loc(monkey)=L1 & loc(bananas)=L2 :-
+ L1 \= L2.
+
+nonexecutable walk(L) & pushBox(L).
+nonexecutable walk(L) & climbOn.
+nonexecutable pushBox(L) & climbOn.
+nonexecutable climbOff & graspBananas.
+
+% -- inertia
+
+inertial FC :-
+ fc(FC).
+exogenous AC :-
+ ac(AC).
+
+% -- queries
+
+query(a(T), 3..6, [0:loc(T)=l1 & max:loc(T)=l3]).
+
+query(getBananas, 1..5, [0:loc(monkey)=l1,
+             0:loc(bananas)=l2,
+             0:loc(box)=l3,
+              max:hasBananas=tt]). % need =tt for iCCalc but not xiCCalc
+
+query(1, 1..5, [0:loc(monkey)=l1,
+        0:loc(bananas)=l2,
+        0:loc(box)=l3,
+        max:hasBananas,  % need =tt for iCCalc  but not xiCCalc
+        max:status=green]).
+

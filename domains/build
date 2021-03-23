@@ -1,0 +1,18 @@
+
+fc(built).
+
+ac(wind).
+ac(build).
+
+domain(wind, strong).
+domain(wind, mild).
+domain(wind, ff).
+
+caused built if true after build & wind=ff.
+caused -built if true after wind=strong.
+nonexecutable build if built.
+
+inertial F :-
+ fc(F).
+exogenous A :-
+ ac(A).
