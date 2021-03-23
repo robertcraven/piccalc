@@ -1,0 +1,50 @@
+
+P,P1 :: person(P).
+B,B1,B2 :: ball(B).
+
+person(k).
+person(l).
+person(m).
+
+ball(a).
+ball(b).
+ball(c).
+
+fc(holding(B)).
+ac(act(B)).
+
+domain(holding(B), P).
+domain(holding(B), nobody).
+
+domain(act(B), pickup(P)).
+domain(act(B), drop).
+domain(act(B), throw(P)).
+domain(act(B), null).
+
+%% inertia and exogeneity
+
+inertial holding(B).
+exogenous act(B).
+
+%% static laws
+
+caused false if holding(B)=P & holding(B1)=P & holding(B2)=P :-
+ B @< B1,
+ B1 @< B2.
+
+%% fluent dynamic
+
+act(B)=pickup(P) causes holding(B)=P.
+nonexecutable act(B)=pickup(P) if -(holding(B)=nobody).
+
+act(B)=drop causes holding(B)=nobody.
+nonexecutable act(B)=drop if holding(B)=nobody.
+
+act(B)=throw(P) maycause holding(B)=P.
+caused holding(B)=nobody if -holding(B)=P after act(B)=throw(P).
+caused false if holding(B1)=P & holding(B)=P after act(B)=throw(P) & holding(B1)=P :-
+ B \= B1.
+nonexecutable act(B)=throw(P) if holding(B)=nobody ++ holding(B)=P.
+
+
+
