@@ -145,8 +145,6 @@ make_completion_clauses_only_if(T, MaxTval) :-
  make_completion_clauses_only_if(Tnext, MaxTval).
 
 %%%%%%%%%% def: make_completion_clauses_only_if/1
-
-% this generates and stores what I call Sigma_T in my notes
    
 make_completion_clauses_only_if(T) :-
  aug_atom_mvc(Atom, Sig, Type),
@@ -285,7 +283,6 @@ nth_to_atom_list(Nbits, Nth, NDom, Index, MaxBits, constant(Var,Sig), Val, T, At
  ),
  Term = ((T:bool(Var,Index)) = BitVal),
  (
-
   Nbits = 1 
   -> AtomList = [Term]
   ;  AtomList = [Term|Rest],

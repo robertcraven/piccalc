@@ -40,7 +40,7 @@ nnf_to_cnf((A ++ B), Cnf) :-
   ;
   CnfA = [[]]                           % false
   -> nnf_to_cnf(B, Cnf)
-  ;  nnf_to_cnf(B, CnfB),        % otherwise
+  ;  nnf_to_cnf(B, CnfB),               % otherwise
      (
       CnfB = []                         % true
       -> nnf_to_cnf(true, Cnf)
