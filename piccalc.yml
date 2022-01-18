@@ -92,7 +92,7 @@ dependencies:
     - pypblib==0.0.4
     - pyrsistent==0.17.3
     - pyswip==0.2.10
-    - python-graphviz==0.16
+    - python-graphviz==0.19.1
     - python-sat==0.1.6.dev12
     - sortedcontainers==2.3.0
     - toposort==1.6
